@@ -26,20 +26,23 @@
         --mid:          #6b7280;
         --light:        #a1a1aa;
         --white:         #f4f4f5;
-        --gold:         #C9A96E;
-        --gold-dim:     #a8863d;
-        --gold-glow:    rgba(201, 169, 110, 0.15);
+        --red:          #E50914;
+        --red-dim:      #FF3333;
+        --red-glow:     rgba(229, 9, 20, 0.15);
+        --gold:         var(--red);
+        --gold-dim:     var(--red-dim);
+        --gold-glow:    var(--red-glow);
         --glass:        rgba(18, 18, 23, 0.65);
         --glass-border: rgba(255, 255, 255, 0.08);
         --glass-light:  rgba(255, 255, 255, 0.04);
         --radius-sm:    6px;
         --radius-md:    14px;
         --radius-lg:    24px;
-        --font-display: 'Impact', 'Arial Narrow', sans-serif;
+        --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
       }
 
-      .gold-glow {
-        box-shadow: 0 0 40px rgba(201, 169, 110, 0.1);
+      .red-glow, .gold-glow {
+        box-shadow: 0 0 40px rgba(229, 9, 20, 0.15);
       }
 
       * {
@@ -49,7 +52,6 @@
       }
 
       html {
-        scroll-behavior: smooth;
         background-color: var(--black);
         color: var(--white);
         font-family: 'Inter', sans-serif;
@@ -121,14 +123,14 @@
         left: 0;
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+        background: linear-gradient(90deg, var(--red), var(--red-dim));
         border-radius: 2px;
       }
 
       #loader-percentage {
         font-family: 'Inter', sans-serif;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 400;
         letter-spacing: 0.2em;
         color: var(--light);
         text-transform: uppercase;
@@ -140,7 +142,7 @@
         top: 0;
         left: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+        background: linear-gradient(90deg, var(--red), var(--red-dim));
         width: 0%;
         z-index: 101;
       }
@@ -200,23 +202,23 @@
         align-items: center;
         justify-content: center;
         background: transparent;
-        color: var(--gold);
+        color: var(--red);
         font-family: 'Inter', sans-serif;
         font-size: 0.8rem;
-        font-weight: 700;
+        font-weight: 500;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         padding: 9px 22px;
         border-radius: var(--radius-sm);
-        border: 1.5px solid var(--gold);
+        border: 1.5px solid var(--red);
         text-decoration: none;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-nav:hover {
-        background: var(--gold);
-        color: var(--black);
+        background: var(--red);
+        color: var(--white);
         transform: translateY(-2px);
       }
 
@@ -242,7 +244,7 @@
         width: 60vw;
         height: 60vw;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(201, 169, 110, 0.12) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.12) 0%, transparent 70%);
         filter: blur(140px);
         pointer-events: none;
         z-index: 0;
@@ -264,15 +266,15 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        border: 1px solid rgba(201, 169, 110, 0.3);
-        background: rgba(201, 169, 110, 0.08);
+        border: 1px solid rgba(229, 9, 20, 0.3);
+        background: rgba(229, 9, 20, 0.08);
         font-family: 'Inter', sans-serif;
         font-size: 0.7rem;
-        font-weight: 700;
+        font-weight: 500;
         letter-spacing: 0.2em;
         padding: 6px 18px;
         border-radius: 50px;
-        color: var(--gold);
+        color: var(--red);
         text-transform: uppercase;
         margin-bottom: 24px;
         cursor: default;
@@ -288,7 +290,7 @@
       }
 
       .hero-title em {
-        color: var(--gold);
+        color: var(--red);
         font-style: normal;
         display: block;
       }
@@ -296,7 +298,8 @@
       .hero-sub {
         font-family: 'Inter', sans-serif;
         font-size: 1rem;
-        color: var(--light);
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 300;
         max-width: 520px;
         margin: 0 auto 40px;
         line-height: 1.75;
@@ -312,16 +315,16 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: var(--gold);
-        color: var(--black);
+        background: var(--red);
+        color: var(--white);
         font-family: 'Inter', sans-serif;
         font-size: 0.82rem;
-        font-weight: 700;
+        font-weight: 500;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         padding: 15px 36px;
         border-radius: var(--radius-sm);
-        border: 1.5px solid var(--gold);
+        border: 1.5px solid var(--red);
         text-decoration: none;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -329,9 +332,9 @@
 
       .btn-primary:hover {
         background: transparent;
-        color: var(--gold);
+        color: var(--red);
         transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(201, 169, 110, 0.15);
+        box-shadow: 0 10px 20px rgba(229, 9, 20, 0.25);
       }
 
       .btn-secondary {
@@ -366,8 +369,8 @@
         align-items: center;
         width: 100%;
         height: 56px;
-        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
-        box-shadow: 0 10px 30px rgba(201, 169, 110, 0.2);
+        background: linear-gradient(90deg, var(--red), var(--red-dim));
+        box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2);
         z-index: 10;
         position: relative;
       }
@@ -399,10 +402,10 @@
       .section-eyebrow {
         font-family: 'Inter', sans-serif;
         font-size: 0.7rem;
-        font-weight: 700;
+        font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.25em;
-        color: var(--gold);
+        color: var(--red);
         display: flex;
         align-items: center;
         margin-bottom: 24px;
@@ -413,7 +416,7 @@
         display: inline-block;
         width: 40px;
         height: 1px;
-        background: var(--gold);
+        background: var(--red);
         margin-left: 12px;
       }
 
@@ -452,14 +455,14 @@
         display: flex;
         flex-direction: column;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        overflow: hidden;
+        overflow: visible; /* FIXED overflow to prevent clip */
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         opacity: 0; /* Pre-animation hidden */
       }
 
       .price-card:not(.featured):hover {
         transform: translateY(-10px);
-        border-color: rgba(201, 169, 110, 0.35);
+        border-color: rgba(229, 9, 20, 0.35);
         box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
       }
 
@@ -468,7 +471,7 @@
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 1px;
-        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        background: linear-gradient(90deg, transparent, var(--red), transparent);
         opacity: 0;
         transition: opacity 0.4s;
       }
@@ -479,10 +482,10 @@
 
       /* Featured Card (Package 02) */
       .price-card.featured {
-        background: linear-gradient(145deg, rgba(201, 169, 110, 0.12) 0%, rgba(18, 18, 23, 0.65) 60%);
-        border-color: var(--gold);
+        background: linear-gradient(145deg, rgba(229, 9, 20, 0.12) 0%, rgba(18, 18, 23, 0.65) 60%);
+        border-color: var(--red);
         transform: scale(1.04);
-        box-shadow: 0 30px 80px rgba(201, 169, 110, 0.12), 0 0 0 1px rgba(201, 169, 110, 0.3);
+        box-shadow: 0 30px 80px rgba(229, 9, 20, 0.15), 0 0 0 1px rgba(229, 9, 20, 0.35);
       }
 
       .price-card.featured:hover {
@@ -492,11 +495,11 @@
       /* Most Popular Badge */
       .popular-badge {
         position: absolute;
-        top: -14px;
+        top: -15px; /* Adjusted position */
         left: 50%;
         transform: translateX(-50%);
-        background: var(--gold);
-        color: var(--black);
+        background: var(--red);
+        color: var(--white); /* White text is much more readable on high-end red */
         font-family: 'Inter', sans-serif;
         font-size: 0.68rem;
         font-weight: 800;
@@ -504,8 +507,8 @@
         letter-spacing: 0.12em;
         padding: 6px 20px;
         border-radius: 50px;
-        box-shadow: 0 4px 20px rgba(201, 169, 110, 0.4);
-        z-index: 5;
+        box-shadow: 0 4px 20px rgba(229, 9, 20, 0.45);
+        z-index: 20; /* Increased z-index so it doesn't get clipped or hidden */
       }
 
       /* Inside Card Content */
@@ -522,7 +525,7 @@
       }
 
       .scope-segment.active {
-        background: var(--gold);
+        background: var(--red);
       }
 
       .scope-segment.inactive {
@@ -580,9 +583,9 @@
         line-height: 1.4;
       }
 
-      .gold-divider {
+      .red-divider, .gold-divider {
         height: 1px;
-        background: rgba(201, 169, 110, 0.15);
+        background: rgba(229, 9, 20, 0.15);
         margin: 20px 0;
         width: 100%;
       }
@@ -611,7 +614,7 @@
 
       .feature-bullet {
         font-family: var(--font-display);
-        color: var(--gold);
+        color: var(--red);
         font-size: 0.9rem;
         line-height: 1.2;
       }
@@ -632,8 +635,8 @@
       }
 
       .turnaround-value {
-        color: var(--gold);
-        font-weight: 700;
+        color: var(--red);
+        font-weight: 600;
       }
 
       /* Add-ons Section */
@@ -665,7 +668,7 @@
       .addon-card {
         background: var(--glass);
         border: 1px solid var(--glass-border);
-        border-left: 3px solid var(--gold);
+        border-left: 3px solid var(--red);
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         border-top-right-radius: var(--radius-sm);
@@ -682,8 +685,8 @@
 
       .addon-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(201, 169, 110, 0.35);
-        border-left-color: var(--gold);
+        border-color: rgba(229, 9, 20, 0.35);
+        border-left-color: var(--red);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       }
 
@@ -697,8 +700,8 @@
       .addon-price {
         font-family: 'Inter', sans-serif;
         font-size: 0.9rem;
-        font-weight: 700;
-        color: var(--gold);
+        font-weight: 600;
+        color: var(--red);
         margin-top: 4px;
       }
 
@@ -730,7 +733,7 @@
       .note-box {
         background: var(--glass);
         border: 1px solid var(--glass-border);
-        border-left: 4px solid var(--gold);
+        border-left: 4px solid var(--red);
         border-radius: var(--radius-md);
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -742,17 +745,18 @@
       }
 
       .note-title {
-        color: var(--gold);
+        color: var(--red);
         font-family: 'Inter', sans-serif;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 0.9rem;
         margin-bottom: 4px;
       }
 
       .note-content {
-        color: var(--light);
+        color: rgba(255, 255, 255, 0.8);
         font-family: 'Inter', sans-serif;
         font-size: 0.9rem;
+        font-weight: 300;
         line-height: 1.6;
       }
 
@@ -784,11 +788,11 @@
       }
 
       .contact-item:hover {
-        color: var(--gold);
+        color: var(--red);
       }
 
       .contact-item i {
-        color: var(--gold);
+        color: var(--red);
         font-size: 1.1rem;
         transition: transform 0.3s;
       }
@@ -827,13 +831,13 @@
         height: 50px;
         border-radius: 50%;
         background: var(--glass);
-        border: 1px solid rgba(201, 169, 110, 0.3);
+        border: 1px solid rgba(229, 9, 20, 0.35);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         display: flex;
         justify-content: center;
         align-items: center;
-        color: var(--gold);
+        color: var(--red);
         font-size: 1.2rem;
         cursor: pointer;
         z-index: 99;
@@ -848,8 +852,8 @@
       }
 
       #scroll-to-top:hover {
-        background: var(--gold);
-        color: var(--black);
+        background: var(--red);
+        color: var(--white);
         transform: translateY(-4px);
       }
 
@@ -861,7 +865,7 @@
         width: 50vw;
         height: 50vw;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 70%);
         filter: blur(120px);
         pointer-events: none;
         z-index: -1;
@@ -875,11 +879,26 @@
         width: 50vw;
         height: 50vw;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 70%);
         filter: blur(120px);
         pointer-events: none;
         z-index: -1;
         opacity: 0.8;
+      }
+
+      /* Global Readability Overrides */
+      body, p, li, div, span, .addon-desc, .note-content, .best-for {
+        font-weight: 300;
+      }
+      p, li, .addon-desc, .note-content, .best-for {
+        color: rgba(255, 255, 255, 0.8) !important;
+      }
+      .price-note {
+        font-weight: 300 !important;
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+      h1, h2, h3, h4, .nav-logo, .footer-logo, .price-container {
+        font-weight: 500 !important;
       }
 
       /* Responsive Breakpoints */
@@ -1284,17 +1303,19 @@
         smoothWheel: true,
         smoothTouch: false,
       });
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
       
       lenis.on('scroll', ScrollTrigger.update);
+      
       gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
+      
       gsap.ticker.lagSmoothing(0);
+
+      // Refresh ScrollTrigger when page fully loads (fonts, images, etc.)
+      window.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+      });
 
       // Loading Screen Timer
       let count = 0;
@@ -1315,6 +1336,7 @@
             onComplete: () => {
               loaderScreen.style.display = 'none';
               startHeroEntrance();
+              ScrollTrigger.refresh();
             }
           });
         }
