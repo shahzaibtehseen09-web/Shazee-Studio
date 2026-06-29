@@ -906,62 +906,7 @@
         pointer-events: none;
       }
 
-      /* Custom Cursor Setup */
-      @media (pointer: fine) {
-        html, body, a, button, select, input, textarea {
-          cursor: none !important;
-        }
-        .custom-cursor {
-          display: block;
-        }
-      }
-      
-      @media (pointer: coarse) {
-        .custom-cursor {
-          display: none !important;
-        }
-      }
 
-      .custom-cursor-dot {
-        width: 8px;
-        height: 8px;
-        background-color: var(--red);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 10000;
-        transition: width 0.15s, height 0.15s;
-      }
-
-      .custom-cursor-ring {
-        width: 32px;
-        height: 32px;
-        border: 1.5px solid var(--red);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 9999;
-        transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
-      }
-
-      /* Hover states for interactive items */
-      .custom-cursor-hover .custom-cursor-ring {
-        width: 48px;
-        height: 48px;
-        background-color: rgba(229, 9, 20, 0.1);
-        border-color: var(--red-dim);
-      }
-
-      .custom-cursor-hover .custom-cursor-dot {
-        width: 12px;
-        height: 12px;
-      }
 
       /* Ambient Glow Blobs with Keyframe Float Animation */
       @keyframes floatBlob1 {
@@ -1125,10 +1070,7 @@
     <div class="bg-glow-blob-2"></div>
     <div class="bg-glow-blob-3"></div>
     
-    <div class="custom-cursor">
-      <div class="custom-cursor-dot" id="cursor-dot"></div>
-      <div class="custom-cursor-ring" id="cursor-ring"></div>
-    </div>
+
 
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
@@ -1675,33 +1617,7 @@
         });
       });
 
-      // Custom Cursor Logic
-      const cursorDot = document.getElementById('cursor-dot');
-      const cursorRing = document.getElementById('cursor-ring');
-      const customCursor = document.querySelector('.custom-cursor');
 
-      if (window.matchMedia('(pointer: fine)').matches) {
-        gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
-        gsap.set(cursorRing, { xPercent: -50, yPercent: -50 });
-
-        window.addEventListener('mousemove', (e) => {
-          gsap.to(cursorDot, { x: e.clientX, y: e.clientY, duration: 0.05, ease: "power2.out" });
-          gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.25, ease: "power2.out" });
-        });
-
-        // Hover effect for all interactive elements
-        const hoverTargets = document.querySelectorAll('a, button, .price-card, .addon-card, input, select, textarea');
-        hoverTargets.forEach(target => {
-          target.addEventListener('mouseenter', () => {
-            customCursor.classList.add('custom-cursor-hover');
-          });
-          target.addEventListener('mouseleave', () => {
-            customCursor.classList.remove('custom-cursor-hover');
-          });
-        });
-      } else {
-        if (customCursor) customCursor.style.display = 'none';
-      }
     </script>
   </body>
 </html>
