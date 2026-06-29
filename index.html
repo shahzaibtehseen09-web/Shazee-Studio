@@ -2,6 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Patch window.fetch for iframe environment compatibility -->
+    <script>
+      (function() {
+        let originalFetch = window.fetch;
+        try {
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return originalFetch;
+            },
+            set: function(val) {
+              originalFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          // Fallback or ignore if already defined/unmodifiable
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Website Packages 2026 — Shazee Studio</title>
     <!-- Fonts -->
@@ -1453,7 +1473,7 @@
       /* Scroll-to-Top Button */
       #scroll-to-top {
         position: fixed;
-        bottom: 30px;
+        bottom: 96px; /* Moved up to make room for floating contact widget */
         right: 30px;
         width: 50px;
         height: 50px;
@@ -1483,6 +1503,152 @@
         background: var(--red);
         color: var(--white);
         transform: translateY(-4px);
+      }
+
+      /* Floating Contact Widget Styles */
+      .floating-contact-widget {
+        position: fixed;
+        bottom: 24px;
+        right: 30px;
+        height: 56px;
+        width: 56px;
+        border-radius: 28px;
+        background: rgba(180, 10, 15, 0.25);
+        border: 1.5px solid rgba(229, 9, 20, 0.45);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        text-decoration: none;
+        z-index: 9999;
+        box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.6);
+        animation: widgetPulse 2s infinite;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 0 16px;
+      }
+
+      @keyframes widgetPulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 16px rgba(229, 9, 20, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+        }
+      }
+
+      .floating-contact-widget i {
+        font-size: 1.4rem;
+        color: var(--white);
+        transition: transform 0.3s;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      .floating-contact-widget span {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        letter-spacing: 0.02em;
+        max-width: 0;
+        opacity: 0;
+        margin-left: 0;
+        transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-left 0.4s;
+      }
+
+      /* Hover state: expands into a pill with label */
+      .floating-contact-widget:hover {
+        width: 200px;
+        border-radius: 30px;
+        background: var(--red);
+        border-color: var(--red-dim);
+        box-shadow: 0 10px 30px rgba(229, 9, 20, 0.5);
+        animation: none; /* Pause pulse animation on hover */
+      }
+
+      .floating-contact-widget:hover i {
+        transform: scale(1.1);
+      }
+
+      .floating-contact-widget:hover span {
+        max-width: 150px;
+        opacity: 1;
+        margin-left: 10px;
+      }
+
+      /* Mobile-only switcher tabs for Deep Feature Comparison Matrix */
+      .matrix-mobile-tabs {
+        display: none;
+        gap: 8px;
+        margin-bottom: 24px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 6px;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .matrix-tab-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--light);
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        text-align: center;
+        outline: none;
+      }
+
+      .matrix-tab-btn.active {
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid var(--red);
+        color: var(--white);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
+      }
+
+      @media (max-width: 768px) {
+        .matrix-mobile-tabs {
+          display: flex;
+        }
+        /* Hide non-active columns on mobile */
+        .matrix-table th[data-col], .matrix-table td[data-col] {
+          display: none;
+        }
+        .matrix-table th[data-col].active-col, .matrix-table td[data-col].active-col {
+          display: table-cell;
+        }
+        /* Keep first column visible */
+        .matrix-table th:first-child, .matrix-table td:first-child {
+          display: table-cell !important;
+          width: 50% !important;
+        }
+        .matrix-table th[data-col], .matrix-table td[data-col] {
+          width: 50% !important;
+        }
+      }
+
+      /* Sticky opaque background for comparison first column to prevent text overlapping during scroll */
+      .matrix-table td:first-child, .matrix-table th:first-child {
+        position: sticky;
+        left: 0;
+        background: #050507; /* Matches var(--black) exactly */
+        z-index: 5;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.6);
+      }
+
+      .matrix-table th:first-child {
+        z-index: 15;
+        background: #0a0a0d; /* Matches sticky table header background */
       }
 
       /* Cinematic Noise Overlay */
@@ -1516,60 +1682,12 @@
         pointer-events: none;
       }
 
-      /* Custom Cinematic Cursor styling */
-      @media (pointer: fine) {
-        html, body, a, button, select, input, textarea, .pkg-sel-btn, .faq-trigger {
-          cursor: none !important;
-        }
-        .custom-cursor {
-          display: block;
-        }
+      /* Restore standard native cursors and remove custom cursor styles */
+      html, body {
+        cursor: auto !important;
       }
-      @media (pointer: coarse) {
-        .custom-cursor {
-          display: none !important;
-        }
-      }
-
-      .custom-cursor-dot {
-        width: 6px;
-        height: 6px;
-        background-color: var(--red);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 10000;
-        will-change: transform;
-      }
-
-      .custom-cursor-ring {
-        width: 32px;
-        height: 32px;
-        border: 1.5px solid var(--red);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 9999;
-        will-change: transform;
-        transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-      }
-
-      /* Cursor Hover active classes */
-      .custom-cursor-hover .custom-cursor-ring {
-        width: 48px;
-        height: 48px;
-        background-color: rgba(229, 9, 20, 0.1);
-        border-color: var(--red-dim);
-      }
-      .custom-cursor-hover .custom-cursor-dot {
-        width: 10px;
-        height: 10px;
+      a, button, select, input, textarea, .pkg-sel-btn, .faq-trigger, .contact-item {
+        cursor: pointer !important;
       }
 
       /* Ambient Glow Blobs with Keyframe Float Animation */
@@ -1763,11 +1881,7 @@
     <div class="bg-glow-blob-2"></div>
     <div class="bg-glow-blob-3"></div>
 
-    <!-- Dual Element Cinematic Custom Cursor -->
-    <div class="custom-cursor">
-      <div class="custom-cursor-dot" id="cursor-dot"></div>
-      <div class="custom-cursor-ring" id="cursor-ring"></div>
-    </div>
+
 
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
@@ -1851,7 +1965,7 @@
             <div class="tier-number">01</div>
             <h3 class="tier-name">Starter / Basic</h3>
             <div class="price-container">
-              <span class="currency-prefix">$</span>400 – $600
+              <span class="currency-prefix">$</span>300 – $600
             </div>
             <div class="price-note">one-time · 4–5 day delivery</div>
             <div class="best-for">
@@ -1901,7 +2015,7 @@
             <div class="tier-number">02</div>
             <h3 class="tier-name">Growth / Standard</h3>
             <div class="price-container">
-              <span class="currency-prefix">$</span>1,200 – $1,800
+              <span class="currency-prefix">$</span>800 – $1,500
             </div>
             <div class="price-note">one-time · 7–10 day delivery</div>
             <div class="best-for">
@@ -1954,7 +2068,7 @@
             <div class="tier-number">03</div>
             <h3 class="tier-name">Pro / Elite</h3>
             <div class="price-container">
-              <span class="currency-prefix">$</span>3,500 – $5,000
+              <span class="currency-prefix">$</span>2,500 – $4,000
             </div>
             <div class="price-note">one-time · 2–3 week delivery</div>
             <div class="best-for">
@@ -2039,9 +2153,9 @@
               <div class="package-selector-row">
                 <span class="slider-label">Choose Design Package Option</span>
                 <div class="pkg-btn-grid">
-                  <button class="pkg-sel-btn" data-cost="500">Starter ($500)</button>
-                  <button class="pkg-sel-btn active" data-cost="1500">Growth ($1,500)</button>
-                  <button class="pkg-sel-btn" data-cost="4200">Pro ($4,200)</button>
+                  <button class="pkg-sel-btn" data-cost="450">Starter ($450)</button>
+                  <button class="pkg-sel-btn active" data-cost="1200">Growth ($1,200)</button>
+                  <button class="pkg-sel-btn" data-cost="3200">Pro ($3,200)</button>
                 </div>
               </div>
             </div>
@@ -2055,7 +2169,7 @@
               
               <div class="hud-stat">
                 <span class="hud-label">Your Package Investment</span>
-                <span class="hud-value" id="hud-cost" style="color: var(--white); font-size: 1.5rem;">$1,500</span>
+                <span class="hud-value" id="hud-cost" style="color: var(--white); font-size: 1.5rem;">$1,200</span>
               </div>
 
               <div class="hud-timeline-box">
@@ -2076,7 +2190,14 @@
           <h2 class="headline-h2 masked-heading-container" style="font-size: clamp(2rem, 3.5vw, 2.8rem);">
             <span class="masked-heading">Detailed Framework Comparison</span>
           </h2>
-          <p class="addons-subtitle" style="margin-bottom: 0px;">A side-by-side technical and functional breakdown of standard deliverables across our three models.</p>
+          <p class="addons-subtitle" style="margin-bottom: 24px;">A side-by-side technical and functional breakdown of standard deliverables across our three models.</p>
+
+          <!-- Mobile Only Switcher Tabs -->
+          <div class="matrix-mobile-tabs">
+            <button class="matrix-tab-btn active" data-col="1">Starter Plan</button>
+            <button class="matrix-tab-btn" data-col="2">Growth Plan</button>
+            <button class="matrix-tab-btn" data-col="3">Pro Elite</button>
+          </div>
 
           <div class="matrix-table-wrapper">
             <table class="matrix-table">
@@ -2293,26 +2414,26 @@
             
             <div class="report-scores">
               <div class="score-circle-panel">
-                <span class="score-num warn">48 / 100</span>
-                <span class="score-lbl">Speed Score</span>
+                <span class="score-num warn" id="score-perf">48 / 100</span>
+                <span class="score-lbl">Performance Score</span>
               </div>
               <div class="score-circle-panel">
-                <span class="score-num">62 / 100</span>
+                <span class="score-num" id="score-ux">62 / 100</span>
                 <span class="score-lbl">Mobile Layout UX</span>
               </div>
               <div class="score-circle-panel">
-                <span class="score-num warn">35 / 100</span>
+                <span class="score-num warn" id="score-conv">35 / 100</span>
                 <span class="score-lbl">Conversion Flow</span>
               </div>
             </div>
 
-            <div class="report-details-box">
+            <div class="report-details-box" id="report-details">
               <strong>Primary Bottlenecks Detected:</strong> Unoptimized layout shifts (CLS) on mobile display, form validation lag triggering up to 35% bounce rates, and standard templates lacking localized trust signals.<br><br>
-              Get a full custom human breakdown of how Shazee Studio would fix these issue for your brand.
+              Get a full custom human breakdown of how Shazee Studio would fix these issues for your brand.
             </div>
 
-            <a href="#" id="audit-cta" target="_blank" rel="noopener noreferrer" class="btn-primary btn-magnetic" style="margin-top: 24px; padding: 12px 28px;">
-              <i class="fa-brands fa-whatsapp" style="margin-right: 8px;"></i>Discuss Free Breakdown
+            <a href="#" id="audit-cta" target="_blank" rel="noopener noreferrer" class="btn-primary btn-magnetic" style="margin-top: 24px; padding: 12px 28px; border-radius: var(--radius-sm); font-weight: 600;">
+              <i class="fa-brands fa-whatsapp" style="margin-right: 8px;"></i>Let's fix this. Claim your custom redesign &rarr;
             </a>
           </div>
 
@@ -2369,6 +2490,12 @@
     <button id="scroll-to-top" aria-label="Scroll to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
+
+    <!-- Floating Contact Widget -->
+    <a href="https://wa.me/923112779340?text=Hi%20Shazee!%20I'm%20interested%20in%20discussing%20a%20project%20with%20Shazee%20Studio." target="_blank" rel="noopener noreferrer" class="floating-contact-widget" aria-label="Discuss Your Project">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>Discuss Your Project</span>
+    </a>
 
     <!-- Scripts -->
     <script>
@@ -2640,7 +2767,7 @@
       const hudCost = document.getElementById('hud-cost');
       const hudTimeline = document.getElementById('hud-timeline');
 
-      let currentSelectedCost = 1500; // Default Standard/Growth Package Cost
+      let currentSelectedCost = 1200; // Default Standard/Growth Package Cost
 
       function calculateROI() {
         const traffic = parseInt(trafficInput.value, 10);
@@ -2745,7 +2872,7 @@
         });
       });
 
-      // "Analyze My Site" URL Audit simulated laser grid logic
+      // "Analyze My Site" URL Audit simulated laser grid logic with dynamic Lighthouse simulation
       const auditForm = document.getElementById('audit-form');
       const auditUrlInput = document.getElementById('audit-url');
       const auditScanner = document.getElementById('audit-scanner');
@@ -2760,7 +2887,22 @@
         "Measuring core asset weight, unoptimized assets & scripts...",
         "Scanning visual hierarchy, focal contrast & CTAs placement...",
         "Analyzing layout-shift (CLS) anomalies and speed indexes...",
-        "Compilation complete. Major conversion leaks detected in hero modules!"
+        "Compilation complete. Major conversion leaks detected!"
+      ];
+
+      const bottleneckScenarios = [
+        {
+          text: "<strong>Primary Bottlenecks Detected:</strong> Unoptimized layout shifts (CLS) on mobile viewport, slow content load speeds (LCP exceeding 4.2 seconds), and lack of trust signals causing user friction.<br><br>Let's overhaul your speed and lead flow mechanics together.",
+          message: "Hi Shazee! I just audited my website and got some bad speed/UX scores. Let's discuss a custom redesign!"
+        },
+        {
+          text: "<strong>Primary Bottlenecks Detected:</strong> Form validation delays causing high checkout abandonment, excessive media asset weights bloating standard loading times, and weak CTA visual contrast.<br><br>Let's rebuild your funnel with pixel-perfect precision.",
+          message: "Hi Shazee! My audit report shows critical bottlenecks in form loading times and call-to-actions. I'd love to claim a custom redesign."
+        },
+        {
+          text: "<strong>Primary Bottlenecks Detected:</strong> Non-responsive padding clipping main text containers on mobile screens, delayed DOM interactive response (FID at 340ms), and zero localized micro-conversion triggers.<br><br>Let's optimize your mobile user experience.",
+          message: "Hi Shazee! My mobile conversion score was very low due to clipping layouts. Can you help me fix my responsive user experience?"
+        }
       ];
 
       auditForm.addEventListener('submit', (e) => {
@@ -2768,85 +2910,128 @@
         const targetUrl = auditUrlInput.value.trim();
         if (!targetUrl) return;
 
-        // Show scanner overlay
-        auditScanner.classList.add('active');
-        scannerLogs.innerHTML = "";
-        auditReport.classList.remove('show');
-
-        // Sequentially write logs to simulated console
-        let logIndex = 0;
-        function printLog() {
-          if (logIndex < simulatedLogs.length) {
-            const line = document.createElement('div');
-            line.style.marginBottom = "8px";
-            line.style.opacity = "0";
-            line.textContent = `[${(logIndex * 0.4).toFixed(1)}s] ${simulatedLogs[logIndex]}`;
-            scannerLogs.appendChild(line);
+        // Animate form out
+        gsap.to(auditForm, {
+          opacity: 0,
+          y: -15,
+          duration: 0.3,
+          onComplete: () => {
+            auditForm.style.display = 'none';
             
-            gsap.to(line, { opacity: 1, duration: 0.25 });
-            scannerLogs.scrollTop = scannerLogs.scrollHeight;
-            
-            logIndex++;
-            setTimeout(printLog, 400 + Math.random() * 300);
-          } else {
-            // Complete scan!
-            setTimeout(() => {
-              // Hide scanner
-              auditScanner.classList.remove('active');
-              
-              // Build dynamic report card
-              document.getElementById('report-url-txt').textContent = targetUrl;
-              
-              // Update prefilled WhatsApp text links
-              const waText = encodeURIComponent(`Hi Shazee! I just audited my website (${targetUrl}) using Shazee Studio's conversion analyzer. I'd love a personalized breakdown of my performance bottlenecks.`);
-              auditCta.href = `https://wa.me/923112779340?text=${waText}`;
+            // Show scanner overlay
+            auditScanner.classList.add('active');
+            scannerLogs.innerHTML = "";
+            auditReport.classList.remove('show');
 
-              // Show report
-              auditReport.classList.add('show');
-              
-              // Trigger GSAP entry of the report card
-              gsap.fromTo(auditReport, 
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-              );
+            // Sequentially write logs to simulated console
+            let logIndex = 0;
+            function printLog() {
+              if (logIndex < simulatedLogs.length) {
+                const line = document.createElement('div');
+                line.style.marginBottom = "8px";
+                line.style.opacity = "0";
+                line.textContent = `[${(logIndex * 0.4).toFixed(1)}s] ${simulatedLogs[logIndex]}`;
+                scannerLogs.appendChild(line);
+                
+                gsap.to(line, { opacity: 1, duration: 0.25 });
+                scannerLogs.scrollTop = scannerLogs.scrollHeight;
+                
+                logIndex++;
+                setTimeout(printLog, 400 + Math.random() * 250);
+              } else {
+                // Complete scan!
+                setTimeout(() => {
+                  // Hide scanner
+                  auditScanner.classList.remove('active');
+                  
+                  // Generate realistic mediocre scores between 40 and 65
+                  const perfScore = Math.floor(Math.random() * 13) + 40; // 40-52
+                  const uxScore = Math.floor(Math.random() * 16) + 50; // 50-65
+                  const convScore = Math.floor(Math.random() * 14) + 35; // 35-48
 
-              // Refresh triggers since container expands
-              setTimeout(() => { ScrollTrigger.refresh(); }, 500);
+                  // Choose a random scenario
+                  const scenario = bottleneckScenarios[Math.floor(Math.random() * bottleneckScenarios.length)];
 
-            }, 800);
+                  // Build dynamic report card
+                  document.getElementById('report-url-txt').textContent = targetUrl;
+                  
+                  const perfEl = document.getElementById('score-perf');
+                  const uxEl = document.getElementById('score-ux');
+                  const convEl = document.getElementById('score-conv');
+                  const detailsEl = document.getElementById('report-details');
+
+                  perfEl.textContent = `${perfScore} / 100`;
+                  uxEl.textContent = `${uxScore} / 100`;
+                  convEl.textContent = `${convScore} / 100`;
+                  detailsEl.innerHTML = scenario.text;
+
+                  // Add conditional styling based on score ranges
+                  if (perfScore < 50) perfEl.className = "score-num warn";
+                  else perfEl.className = "score-num";
+
+                  if (uxScore < 50) uxEl.className = "score-num warn";
+                  else uxEl.className = "score-num";
+
+                  if (convScore < 50) convEl.className = "score-num warn";
+                  else convEl.className = "score-num";
+
+                  // Update prefilled WhatsApp text links
+                  const prefilledMessage = `${scenario.message} Audited Website: ${targetUrl} (Scores - Perf: ${perfScore}, UX: ${uxScore}, Conv: ${convScore}).`;
+                  const waText = encodeURIComponent(prefilledMessage);
+                  auditCta.href = `https://wa.me/923112779340?text=${waText}`;
+
+                  // Show report
+                  auditReport.classList.add('show');
+                  
+                  // Trigger GSAP entry of the report card
+                  gsap.fromTo(auditReport, 
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+                  );
+
+                  // Refresh triggers since container expands
+                  setTimeout(() => { ScrollTrigger.refresh(); }, 500);
+
+                }, 800);
+              }
+            }
+
+            printLog();
           }
-        }
-
-        printLog();
+        });
       });
 
-      // Cinematic Dual Cursor tracking loops
-      const cursorDot = document.getElementById('cursor-dot');
-      const cursorRing = document.getElementById('cursor-ring');
-      const customCursor = document.querySelector('.custom-cursor');
+      // Mobile Comparison Matrix Switcher Tabs
+      const matrixTabs = document.querySelectorAll('.matrix-tab-btn');
+      const matrixTableCells = document.querySelectorAll('.matrix-table [data-col]');
 
-      if (window.matchMedia('(pointer: fine)').matches) {
-        gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
-        gsap.set(cursorRing, { xPercent: -50, yPercent: -50 });
-
-        window.addEventListener('mousemove', (e) => {
-          gsap.to(cursorDot, { x: e.clientX, y: e.clientY, duration: 0.05, ease: "power2.out" });
-          gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.22, ease: "power2.out" });
+      function setMobileMatrixColumn(colIdx) {
+        matrixTabs.forEach(btn => {
+          if (btn.getAttribute('data-col') === colIdx) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
         });
-
-        // Hover effect for all interactive items
-        const hoverTargets = document.querySelectorAll('a, button, .price-card, .addon-card, input, select, textarea, .pkg-sel-btn, .faq-trigger');
-        hoverTargets.forEach(target => {
-          target.addEventListener('mouseenter', () => {
-            customCursor.classList.add('custom-cursor-hover');
-          });
-          target.addEventListener('mouseleave', () => {
-            customCursor.classList.remove('custom-cursor-hover');
-          });
+        matrixTableCells.forEach(cell => {
+          if (cell.getAttribute('data-col') === colIdx) {
+            cell.classList.add('active-col');
+          } else {
+            cell.classList.remove('active-col');
+          }
         });
-      } else {
-        if (customCursor) customCursor.style.display = 'none';
       }
+
+      // Initialize switcher
+      setMobileMatrixColumn("1");
+
+      matrixTabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const colIdx = btn.getAttribute('data-col');
+          setMobileMatrixColumn(colIdx);
+          setTimeout(() => { ScrollTrigger.refresh(); }, 150);
+        });
+      });
 
       // Magnetic Button Pull Effect
       if (window.matchMedia('(pointer: fine)').matches) {
