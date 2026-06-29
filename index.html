@@ -1,0 +1,1495 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Website Packages 2025 — Shazee Studio</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- GSAP & Lenis CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    
+    <style>
+      @font-face { font-family: 'Bebas'; src: local('Impact'); }
+      
+      :root {
+        --black:        #060608;
+        --dark-gray:    #0b0b0f;
+        --steel:        #121217;
+        --gray:         #181822;
+        --mid:          #6b7280;
+        --light:        #a1a1aa;
+        --white:         #f4f4f5;
+        --gold:         #C9A96E;
+        --gold-dim:     #a8863d;
+        --gold-glow:    rgba(201, 169, 110, 0.15);
+        --glass:        rgba(18, 18, 23, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-light:  rgba(255, 255, 255, 0.04);
+        --radius-sm:    6px;
+        --radius-md:    14px;
+        --radius-lg:    24px;
+        --font-display: 'Impact', 'Arial Narrow', sans-serif;
+      }
+
+      .gold-glow {
+        box-shadow: 0 0 40px rgba(201, 169, 110, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        background-color: var(--black);
+        color: var(--white);
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        overflow-x: hidden;
+        background-color: var(--black);
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--black);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--steel);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--gold);
+      }
+
+      /* Selection */
+      ::selection {
+        background: var(--gold);
+        color: var(--black);
+      }
+
+      /* Loading Screen */
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--black);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+      }
+
+      #loader-logo {
+        font-family: var(--font-display);
+        font-size: 3.5rem;
+        letter-spacing: 0.05em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      #loader-bar-bg {
+        width: 200px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #loader-bar-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+        border-radius: 2px;
+      }
+
+      #loader-percentage {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--light);
+        text-transform: uppercase;
+      }
+
+      /* Scroll Progress Bar */
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+        width: 0%;
+        z-index: 101;
+      }
+
+      /* Sticky Glass Nav */
+      #sticky-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        background: rgba(6, 6, 8, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--glass-border);
+        padding: 22px 64px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      #sticky-nav.shrunk {
+        padding: 14px 64px;
+        background: rgba(6, 6, 8, 0.9);
+      }
+
+      .nav-logo {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .nav-phone {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--light);
+        text-decoration: none;
+        transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .nav-phone:hover {
+        color: var(--white);
+      }
+
+      .btn-nav {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        color: var(--gold);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 9px 22px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--gold);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .btn-nav:hover {
+        background: var(--gold);
+        color: var(--black);
+        transform: translateY(-2px);
+      }
+
+      /* Hero Section */
+      #hero {
+        min-height: 100vh;
+        background: var(--black);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 140px 24px 80px;
+        overflow: hidden;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(201, 169, 110, 0.12) 0%, transparent 70%);
+        filter: blur(140px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .hero-eyebrow, .hero-title, .hero-sub, .hero-actions {
+        opacity: 0; /* Pre-animation hidden to prevent layout flash */
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(201, 169, 110, 0.3);
+        background: rgba(201, 169, 110, 0.08);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        padding: 6px 18px;
+        border-radius: 50px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        cursor: default;
+      }
+
+      .hero-title {
+        font-family: var(--font-display);
+        line-height: 0.95;
+        letter-spacing: 0.02em;
+        color: var(--white);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+
+      .hero-title em {
+        color: var(--gold);
+        font-style: normal;
+        display: block;
+      }
+
+      .hero-sub {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        color: var(--light);
+        max-width: 520px;
+        margin: 0 auto 40px;
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gold);
+        color: var(--black);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 15px 36px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--gold);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .btn-primary:hover {
+        background: transparent;
+        color: var(--gold);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(201, 169, 110, 0.15);
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--white);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 15px 36px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-3px);
+      }
+
+      /* Marquee Strip */
+      .marquee-container {
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 56px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+        box-shadow: 0 10px 30px rgba(201, 169, 110, 0.2);
+        z-index: 10;
+        position: relative;
+      }
+
+      .marquee-content {
+        display: inline-flex;
+        gap: 2rem;
+        animation: marquee 22s linear infinite;
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        letter-spacing: 0.2em;
+        color: var(--black);
+        text-transform: uppercase;
+      }
+
+      @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* Main Headlines Section */
+      .headline-section {
+        padding: 100px 64px 0px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: var(--black);
+      }
+
+      .section-eyebrow {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .section-eyebrow::after {
+        content: '';
+        display: inline-block;
+        width: 40px;
+        height: 1px;
+        background: var(--gold);
+        margin-left: 12px;
+      }
+
+      .headline-h2 {
+        font-family: var(--font-display);
+        color: var(--white);
+        line-height: 1;
+        letter-spacing: 0.02em;
+        margin-top: 12px;
+      }
+
+      /* Pricing Section */
+      .pricing-grid-container {
+        padding: 64px 64px 100px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: var(--black);
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      /* Base Glass Card */
+      .price-card {
+        background: var(--glass);
+        border-radius: var(--radius-md);
+        padding: 52px 40px;
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        opacity: 0; /* Pre-animation hidden */
+      }
+
+      .price-card:not(.featured):hover {
+        transform: translateY(-10px);
+        border-color: rgba(201, 169, 110, 0.35);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+      }
+
+      .price-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .price-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Featured Card (Package 02) */
+      .price-card.featured {
+        background: linear-gradient(145deg, rgba(201, 169, 110, 0.12) 0%, rgba(18, 18, 23, 0.65) 60%);
+        border-color: var(--gold);
+        transform: scale(1.04);
+        box-shadow: 0 30px 80px rgba(201, 169, 110, 0.12), 0 0 0 1px rgba(201, 169, 110, 0.3);
+      }
+
+      .price-card.featured:hover {
+        transform: scale(1.06) translateY(-6px);
+      }
+
+      /* Most Popular Badge */
+      .popular-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gold);
+        color: var(--black);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 6px 20px;
+        border-radius: 50px;
+        box-shadow: 0 4px 20px rgba(201, 169, 110, 0.4);
+        z-index: 5;
+      }
+
+      /* Inside Card Content */
+      .scope-track {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .scope-segment {
+        height: 2px;
+        flex: 1;
+        border-radius: 2px;
+      }
+
+      .scope-segment.active {
+        background: var(--gold);
+      }
+
+      .scope-segment.inactive {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .tier-number {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--mid);
+        letter-spacing: 0.08em;
+      }
+
+      .tier-name {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        letter-spacing: 0.06em;
+        color: var(--white);
+        margin-top: 4px;
+      }
+
+      .price-container {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        line-height: 1;
+        color: var(--white);
+        margin-top: 16px;
+        display: flex;
+        align-items: baseline;
+      }
+
+      .pkr-prefix {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--light);
+        margin-right: 4px;
+        text-transform: uppercase;
+      }
+
+      .price-note {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        color: var(--mid);
+        margin-top: 6px;
+      }
+
+      .best-for {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        color: var(--light);
+        font-style: italic;
+        margin-top: 14px;
+        line-height: 1.4;
+      }
+
+      .gold-divider {
+        height: 1px;
+        background: rgba(201, 169, 110, 0.15);
+        margin: 20px 0;
+        width: 100%;
+      }
+
+      .features-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+        list-style: none;
+      }
+
+      .feature-item {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        color: var(--light);
+        line-height: 1.5;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .featured .feature-item {
+        color: var(--white);
+      }
+
+      .feature-bullet {
+        font-family: var(--font-display);
+        color: var(--gold);
+        font-size: 0.9rem;
+        line-height: 1.2;
+      }
+
+      .turnaround-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 16px;
+        margin-top: auto;
+      }
+
+      .turnaround-label {
+        color: var(--mid);
+      }
+
+      .turnaround-value {
+        color: var(--gold);
+        font-weight: 700;
+      }
+
+      /* Add-ons Section */
+      .addons-section {
+        background: var(--dark-gray);
+        padding: 80px 64px;
+      }
+
+      .addons-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .addons-subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        color: var(--light);
+        margin-top: 4px;
+        margin-bottom: 32px;
+      }
+
+      .addons-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .addon-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-left: 3px solid var(--gold);
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: var(--radius-sm);
+        border-bottom-right-radius: var(--radius-sm);
+        padding: 28px 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        opacity: 0; /* Pre-animation hidden */
+      }
+
+      .addon-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(201, 169, 110, 0.35);
+        border-left-color: var(--gold);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      }
+
+      .addon-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--white);
+      }
+
+      .addon-price {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin-top: 4px;
+      }
+
+      .addon-desc {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        color: var(--light);
+        line-height: 1.55;
+        margin-top: 8px;
+      }
+
+      /* Footer / Contact Section */
+      #contact-footer {
+        background: var(--black);
+        padding: 70px 64px 50px;
+        border-top: 1px solid var(--glass-border);
+        position: relative;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      /* Row 1 — Note Box */
+      .note-box {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-left: 4px solid var(--gold);
+        border-radius: var(--radius-md);
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        padding: 28px 36px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        margin-bottom: 40px;
+        opacity: 0; /* Pre-animation hidden */
+      }
+
+      .note-title {
+        color: var(--gold);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .note-content {
+        color: var(--light);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      /* Row 2 — Contact + Branding */
+      .footer-row-2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        opacity: 0; /* Pre-animation hidden */
+      }
+
+      .footer-contact-items {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--white);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .contact-item:hover {
+        color: var(--gold);
+      }
+
+      .contact-item i {
+        color: var(--gold);
+        font-size: 1.1rem;
+        transition: transform 0.3s;
+      }
+
+      .contact-item:hover i {
+        transform: scale(1.15) translateY(-1px);
+      }
+
+      .footer-branding {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      .footer-logo {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .footer-tagline {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        color: var(--mid);
+        margin-top: 2px;
+      }
+
+      /* Scroll-to-Top Button */
+      #scroll-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--glass);
+        border: 1px solid rgba(201, 169, 110, 0.3);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--gold);
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s, background-color 0.3s, color 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      #scroll-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      #scroll-to-top:hover {
+        background: var(--gold);
+        color: var(--black);
+        transform: translateY(-4px);
+      }
+
+      /* Ambient Glow Blobs */
+      .bg-glow-blob-1 {
+        position: absolute;
+        top: 40%;
+        left: -10vw;
+        width: 50vw;
+        height: 50vw;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.8;
+      }
+
+      .bg-glow-blob-2 {
+        position: absolute;
+        bottom: 10%;
+        right: -10vw;
+        width: 50vw;
+        height: 50vw;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.8;
+      }
+
+      /* Responsive Breakpoints */
+      @media (max-width: 1024px) {
+        .pricing-grid {
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        #sticky-nav {
+          padding: 18px 24px;
+        }
+        
+        #sticky-nav.shrunk {
+          padding: 12px 24px;
+        }
+
+        .headline-section {
+          padding: 80px 24px 0px;
+        }
+
+        .pricing-grid-container {
+          padding: 40px 24px 80px;
+        }
+
+        .pricing-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .price-card.featured {
+          transform: none;
+        }
+
+        .price-card.featured:hover {
+          transform: translateY(-6px);
+        }
+
+        .addons-section {
+          padding: 80px 24px;
+        }
+
+        .addons-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        #contact-footer {
+          padding: 60px 24px 40px;
+        }
+
+        .footer-row-2 {
+          flex-direction: column;
+          gap: 32px;
+          align-items: flex-start;
+        }
+
+        .footer-branding {
+          align-items: flex-start;
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .addons-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-contact-items {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+      <div id="loader-logo">
+        <span style="color: var(--white);">Shazee</span><span style="color: var(--gold);">Studio</span>
+      </div>
+      <div id="loader-bar-bg">
+        <div id="loader-bar-fill"></div>
+      </div>
+      <div id="loader-percentage">0%</div>
+    </div>
+
+    <!-- Sticky Glass Nav -->
+    <nav id="sticky-nav">
+      <a href="#" class="nav-logo">
+        <span style="color: var(--white);">Shazee</span><span style="color: var(--gold);">Studio</span>
+      </a>
+      <div class="nav-right">
+        <a href="https://wa.me/923112779340?text=Hi%20Shazee!%20I'm%20interested%20in%20a%20website%20package.%20Can%20you%20help%20me%3F" target="_blank" rel="noopener noreferrer" class="nav-phone">
+          <i class="fa-brands fa-whatsapp" style="color: var(--gold); margin-right: 6px;"></i>+923112779340
+        </a>
+        <a href="#contact-footer" class="btn-nav">Get a Quote</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          ◆ WEBSITE PACKAGES 2025
+        </div>
+        <h1 class="hero-title" style="font-size: clamp(3.5rem, 7vw, 6rem);">
+          WEB DESIGN THAT<br />
+          BRINGS IN REAL<br />
+          <em>CLIENTS.</em>
+        </h1>
+        <p class="hero-sub">
+          Three packages. Zero fluff. Pick the plan that fits where your business is right now and start getting serious inquiries.
+        </p>
+        <div class="hero-actions">
+          <a href="#pricing-sheet" class="btn-primary">See Packages</a>
+          <a href="https://www.instagram.com/shazeedesigner/" target="_blank" rel="noopener noreferrer" class="btn-secondary">DM on Instagram</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Marquee Strip -->
+    <div class="marquee-container">
+      <div class="marquee-content">
+        <span>&nbsp;&nbsp;◆ Web Design&nbsp;&nbsp;◆ Landing Pages&nbsp;&nbsp;◆ Business Sites&nbsp;&nbsp;◆ E-Commerce&nbsp;&nbsp;◆ WhatsApp Integration&nbsp;&nbsp;◆ SEO Setup&nbsp;&nbsp;◆ Karachi, Pakistan&nbsp;&nbsp;◆ Shazee Studio&nbsp;&nbsp;</span>
+        <span>&nbsp;&nbsp;◆ Web Design&nbsp;&nbsp;◆ Landing Pages&nbsp;&nbsp;◆ Business Sites&nbsp;&nbsp;◆ E-Commerce&nbsp;&nbsp;◆ WhatsApp Integration&nbsp;&nbsp;◆ SEO Setup&nbsp;&nbsp;◆ Karachi, Pakistan&nbsp;&nbsp;◆ Shazee Studio&nbsp;&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- Main Content Wrapper (with absolute elements inside) -->
+    <main style="position: relative; background: var(--black);">
+      <div class="bg-glow-blob-1"></div>
+      <div class="bg-glow-blob-2"></div>
+
+      <!-- Headline Section -->
+      <section id="pricing-sheet" class="headline-section">
+        <div class="section-eyebrow scroll-reveal">HOW WE WORK</div>
+        <h2 class="headline-h2 scroll-reveal" style="font-size: clamp(2.6rem, 4.5vw, 3.8rem);">
+          Pick the plan that fits your business — every package is built to bring in real inquiries, not just look good.
+        </h2>
+      </section>
+
+      <!-- Pricing Cards Grid -->
+      <section class="pricing-grid-container">
+        <div class="pricing-grid">
+          
+          <!-- Package 01 — STARTER -->
+          <div class="price-card">
+            <div class="scope-track">
+              <div class="scope-segment active"></div>
+              <div class="scope-segment inactive"></div>
+              <div class="scope-segment inactive"></div>
+            </div>
+            <div class="tier-number">01</div>
+            <h3 class="tier-name">Package 01 — STARTER</h3>
+            <div class="price-container">
+              <span class="pkr-prefix">PKR</span>20,000 – 25,000
+            </div>
+            <div class="price-note">one-time · 4–5 day delivery</div>
+            <div class="best-for">
+              Best for: A clean, credible first website that gets you found and trusted.
+            </div>
+            <div class="gold-divider"></div>
+            <ul class="features-list">
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>One-page site, up to 4 sections (Home, About, Services, Contact)</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Mobile-responsive, fast-loading design</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Click-to-WhatsApp button + contact form</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Google Maps location embed</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>1 round of revisions</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Domain & hosting setup guidance</span>
+              </li>
+            </ul>
+            <div class="turnaround-row">
+              <div class="turnaround-label">Revisions</div>
+              <div class="turnaround-value">1 round</div>
+            </div>
+          </div>
+
+          <!-- Package 02 — GROWTH -->
+          <div class="price-card featured">
+            <div class="popular-badge">MOST POPULAR</div>
+            <div class="scope-track">
+              <div class="scope-segment active"></div>
+              <div class="scope-segment active"></div>
+              <div class="scope-segment inactive"></div>
+            </div>
+            <div class="tier-number">02</div>
+            <h3 class="tier-name">Package 02 — GROWTH</h3>
+            <div class="price-container">
+              <span class="pkr-prefix">PKR</span>30,000 – 50,000
+            </div>
+            <div class="price-note">one-time · 7–10 day delivery</div>
+            <div class="best-for">
+              Best for: Businesses ready to actively turn visitors into real leads.
+            </div>
+            <div class="gold-divider"></div>
+            <ul class="features-list">
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Everything in Starter, plus:</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Custom multi-section design (up to 8 sections)</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Booking / inquiry form with WhatsApp + email alerts</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Photo & video gallery</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Basic on-page SEO setup</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Social media integration</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>2 rounds of revisions</span>
+              </li>
+            </ul>
+            <div class="turnaround-row">
+              <div class="turnaround-label">Revisions</div>
+              <div class="turnaround-value">2 rounds</div>
+            </div>
+          </div>
+
+          <!-- Package 03 — PRO -->
+          <div class="price-card">
+            <div class="scope-track">
+              <div class="scope-segment active"></div>
+              <div class="scope-segment active"></div>
+              <div class="scope-segment active"></div>
+            </div>
+            <div class="tier-number">03</div>
+            <h3 class="tier-name">Package 03 — PRO</h3>
+            <div class="price-container">
+              <span class="pkr-prefix">PKR</span>80,000 – 100,000
+            </div>
+            <div class="price-note">one-time · 2–3 week delivery</div>
+            <div class="best-for">
+              Best for: A fully custom, premium experience built to stand out.
+            </div>
+            <div class="gold-divider"></div>
+            <ul class="features-list">
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Everything in Growth, plus:</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Fully custom design — no templates</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Google Business Profile setup & optimization</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>WhatsApp Business / live chat widget</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>Copywriting & content support</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>30 days priority post-launch support</span>
+              </li>
+              <li class="feature-item">
+                <span class="feature-bullet">✦</span>
+                <span>3 rounds of revisions</span>
+              </li>
+            </ul>
+            <div class="turnaround-row">
+              <div class="turnaround-label">Revisions</div>
+              <div class="turnaround-value">3 rounds</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Add-ons Section -->
+      <section class="addons-section">
+        <div class="addons-container">
+          <div class="section-eyebrow scroll-reveal">ADD-ONS & ONGOING CARE</div>
+          <p class="addons-subtitle scroll-reveal">Bolt on what you need, skip what you don't.</p>
+          
+          <div class="addons-grid">
+            
+            <!-- Addon 1 -->
+            <div class="addon-card">
+              <h4 class="addon-title">Monthly Care Plan</h4>
+              <div class="addon-price">PKR 3,000–10,000/mo</div>
+              <p class="addon-desc">Hosting, backups, uptime checks & small content updates.</p>
+            </div>
+
+            <!-- Addon 2 -->
+            <div class="addon-card">
+              <h4 class="addon-title">Extra Revision Round</h4>
+              <div class="addon-price">PKR 3,000</div>
+              <p class="addon-desc">Beyond the rounds included in your package.</p>
+            </div>
+
+            <!-- Addon 3 -->
+            <div class="addon-card">
+              <h4 class="addon-title">Photography / Content</h4>
+              <div class="addon-price">Quoted separately</div>
+              <p class="addon-desc">Professional photos or written copy for your site.</p>
+            </div>
+
+            <!-- Addon 4 -->
+            <div class="addon-card">
+              <h4 class="addon-title">Export / B2B Sites</h4>
+              <div class="addon-price">Custom quote</div>
+              <p class="addon-desc">RFQ forms, product catalogs, multi-language builds.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact-footer">
+      <div class="footer-container">
+        
+        <!-- Row 1 — Note Box -->
+        <div class="note-box footer-reveal">
+          <div class="note-title">Not sure which package fits?</div>
+          <div class="note-content">
+            Send your business name and what you need — Shazee will recommend the right plan and can share a free working demo before you decide.
+          </div>
+        </div>
+
+        <!-- Row 2 — Contact + Branding -->
+        <div class="footer-row-2 footer-reveal">
+          <div class="footer-contact-items">
+            <a href="https://wa.me/923112779340?text=Hi%20Shazee!%20I'm%20interested%20in%20a%20website%20package.%20Can%20you%20help%20me%3F" target="_blank" rel="noopener noreferrer" class="contact-item">
+              <i class="fa-brands fa-whatsapp"></i>+923112779340
+            </a>
+            <a href="mailto:shahzaibtehseen09@gmail.com?subject=Inquiry%20from%20Website" class="contact-item">
+              <i class="fa-regular fa-envelope"></i>shahzaibtehseen09@gmail.com
+            </a>
+            <a href="https://www.instagram.com/shazeedesigner/" target="_blank" rel="noopener noreferrer" class="contact-item">
+              <i class="fa-brands fa-instagram"></i>@shazeedesigner
+            </a>
+          </div>
+          <div class="footer-branding">
+            <div class="footer-logo">
+              <span style="color: var(--white);">Shazee</span><span style="color: var(--gold);">Studio</span>
+            </div>
+            <div class="footer-tagline">Web Design & Digital Presence · Karachi, Pakistan</div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- Scroll-to-Top Button -->
+    <button id="scroll-to-top" aria-label="Scroll to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+      // Register GSAP Plugins
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Lenis Smooth Scroll Setup
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      // Loading Screen Timer
+      let count = 0;
+      const barFill = document.getElementById('loader-bar-fill');
+      const percentLabel = document.getElementById('loader-percentage');
+      const loaderScreen = document.getElementById('loader');
+
+      const loaderInterval = setInterval(() => {
+        count += Math.floor(Math.random() * 8) + 4;
+        if (count >= 100) {
+          count = 100;
+          clearInterval(loaderInterval);
+          
+          gsap.to(loaderScreen, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            onComplete: () => {
+              loaderScreen.style.display = 'none';
+              startHeroEntrance();
+            }
+          });
+        }
+        barFill.style.width = count + '%';
+        percentLabel.textContent = count + '%';
+      }, 60);
+
+      // Hero Entrance Timeline
+      function startHeroEntrance() {
+        gsap.fromTo('.hero-eyebrow', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" });
+        gsap.fromTo('.hero-title', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.1, ease: "power4.out", delay: 0.2 });
+        gsap.fromTo('.hero-sub', { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.5 });
+        gsap.fromTo('.hero-actions', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.4)", delay: 0.7 });
+        
+        // Initial ScrollTriggers load
+        initScrollAnimations();
+      }
+
+      // Scroll Trigger Entrances
+      function initScrollAnimations() {
+        // Section titles, eyebrows, body text
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+          gsap.fromTo(el, 
+            { opacity: 0, y: 35 },
+            { 
+              opacity: 1, 
+              y: 0, 
+              duration: 1, 
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play none none none"
+              }
+            }
+          );
+        });
+
+        // Pricing Cards Stagger
+        gsap.fromTo('.price-card',
+          { opacity: 0, y: 55, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: (idx, target) => target.classList.contains('featured') ? 1.04 : 1,
+            duration: 0.9,
+            ease: "power2.out",
+            stagger: 0.13,
+            scrollTrigger: {
+              trigger: '.pricing-grid',
+              start: "top 88%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
+
+        // Addon Cards Stagger
+        gsap.fromTo('.addon-card',
+          { opacity: 0, y: 55, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.9,
+            ease: "power2.out",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: '.addons-grid',
+              start: "top 88%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
+
+        // Footer elements stagger
+        gsap.fromTo('.footer-reveal',
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            stagger: 0.08,
+            scrollTrigger: {
+              trigger: '#contact-footer',
+              start: "top 88%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
+      }
+
+      // Sticky glass nav show/hide on scroll & Shrinking
+      let lastScrollY = window.scrollY;
+      const navElement = document.getElementById('sticky-nav');
+
+      window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Update Scroll Progress Bar
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progressPercent = scrollHeight > 0 ? (currentScrollY / scrollHeight) * 100 : 0;
+        document.getElementById('scroll-progress').style.width = progressPercent + '%';
+        
+        // Scroll-to-Top Button visibility
+        const scrollTopBtn = document.getElementById('scroll-to-top');
+        if (currentScrollY > 400) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+
+        // Nav shrink & hide-on-scroll-down
+        if (currentScrollY > 80) {
+          navElement.classList.add('shrunk');
+          if (currentScrollY > lastScrollY && currentScrollY > 200) {
+            // Scrolling down
+            gsap.to(navElement, { y: '-100%', duration: 0.3, ease: "power2.out" });
+          } else {
+            // Scrolling up
+            gsap.to(navElement, { y: '0%', duration: 0.3, ease: "power2.out" });
+          }
+        } else {
+          navElement.classList.remove('shrunk');
+          gsap.to(navElement, { y: '0%', duration: 0.3, ease: "power2.out" });
+        }
+
+        lastScrollY = currentScrollY;
+      }, { passive: true });
+
+      // Scroll-to-Top Action
+      document.getElementById('scroll-to-top').addEventListener('click', () => {
+        lenis.scrollTo(0, { duration: 1.2 });
+      });
+
+      // Navigation button scroll target
+      document.querySelector('.btn-nav').addEventListener('click', (e) => {
+        e.preventDefault();
+        lenis.scrollTo('#contact-footer', { duration: 1.2 });
+      });
+
+      // See Packages button scroll target
+      document.querySelector('.btn-primary').addEventListener('click', (e) => {
+        e.preventDefault();
+        lenis.scrollTo('#pricing-sheet', { duration: 1.2 });
+      });
+
+      // 3D Card Hover Tilt Animation
+      document.querySelectorAll('.price-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const tiltX = -y / (rect.height / 10);
+          const tiltY = x / (rect.width / 10);
+          
+          const targetScale = card.classList.contains('featured') ? 1.06 : 1.02;
+          
+          gsap.to(card, {
+            transform: `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(${targetScale}, ${targetScale}, 1.02)`,
+            duration: 0.3, 
+            ease: "power1.out"
+          });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          const baseScale = card.classList.contains('featured') ? 1.04 : 1;
+          
+          gsap.to(card, {
+            transform: `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(${baseScale}, ${baseScale}, 1)`,
+            duration: 0.5, 
+            ease: "power2.out"
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
