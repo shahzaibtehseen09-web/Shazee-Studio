@@ -213,13 +213,19 @@
         border: 1.5px solid var(--red);
         text-decoration: none;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-nav:hover {
         background: var(--red);
         color: var(--white);
         transform: translateY(-2px);
+        box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+      }
+
+      .btn-nav:active {
+        transform: translateY(-1px) scale(0.92);
+        box-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
       }
 
       /* Hero Section */
@@ -327,14 +333,19 @@
         border: 1.5px solid var(--red);
         text-decoration: none;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-primary:hover {
         background: transparent;
         color: var(--red);
         transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(229, 9, 20, 0.25);
+        box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+      }
+
+      .btn-primary:active {
+        transform: translateY(-1px) scale(0.92);
+        box-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
       }
 
       .btn-secondary {
@@ -353,12 +364,18 @@
         border: 1.5px solid rgba(255, 255, 255, 0.15);
         text-decoration: none;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-secondary:hover {
         background: rgba(255, 255, 255, 0.08);
         transform: translateY(-3px);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-secondary:active {
+        transform: translateY(-1px) scale(0.92);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
       }
 
       /* Marquee Strip */
@@ -606,6 +623,7 @@
         display: flex;
         gap: 10px;
         align-items: flex-start;
+        opacity: 0; /* Animated via GSAP */
       }
 
       .featured .feature-item {
@@ -857,33 +875,157 @@
         transform: translateY(-4px);
       }
 
-      /* Ambient Glow Blobs */
+      /* Cinematic Noise Overlay */
+      .film-grain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* Lighted Grid Background */
+      .bg-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -2;
+        background-image: 
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-position: center center;
+        mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 75%);
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 75%);
+        pointer-events: none;
+      }
+
+      /* Custom Cursor Setup */
+      @media (pointer: fine) {
+        html, body, a, button, select, input, textarea {
+          cursor: none !important;
+        }
+        .custom-cursor {
+          display: block;
+        }
+      }
+      
+      @media (pointer: coarse) {
+        .custom-cursor {
+          display: none !important;
+        }
+      }
+
+      .custom-cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--red);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 10000;
+        transition: width 0.15s, height 0.15s;
+      }
+
+      .custom-cursor-ring {
+        width: 32px;
+        height: 32px;
+        border: 1.5px solid var(--red);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 9999;
+        transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+      }
+
+      /* Hover states for interactive items */
+      .custom-cursor-hover .custom-cursor-ring {
+        width: 48px;
+        height: 48px;
+        background-color: rgba(229, 9, 20, 0.1);
+        border-color: var(--red-dim);
+      }
+
+      .custom-cursor-hover .custom-cursor-dot {
+        width: 12px;
+        height: 12px;
+      }
+
+      /* Ambient Glow Blobs with Keyframe Float Animation */
+      @keyframes floatBlob1 {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(6vw, -6vh) scale(1.15); }
+        66% { transform: translate(-4vw, 10vh) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+      }
+
+      @keyframes floatBlob2 {
+        0% { transform: translate(0px, 0px) scale(1); }
+        50% { transform: translate(-10vw, 12vh) scale(1.25); }
+        100% { transform: translate(0px, 0px) scale(1); }
+      }
+
+      @keyframes floatBlob3 {
+        0% { transform: translate(0px, 0px) scale(0.9); }
+        40% { transform: translate(5vw, 6vh) scale(1.15); }
+        100% { transform: translate(0px, 0px) scale(0.9); }
+      }
+
       .bg-glow-blob-1 {
-        position: absolute;
-        top: 40%;
-        left: -10vw;
+        position: fixed;
+        top: 15%;
+        left: -15vw;
         width: 50vw;
         height: 50vw;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.12) 0%, transparent 70%);
         filter: blur(120px);
         pointer-events: none;
         z-index: -1;
         opacity: 0.8;
+        animation: floatBlob1 24s ease-in-out infinite;
       }
 
       .bg-glow-blob-2 {
-        position: absolute;
-        bottom: 10%;
-        right: -10vw;
-        width: 50vw;
-        height: 50vw;
+        position: fixed;
+        bottom: 5%;
+        right: -15vw;
+        width: 55vw;
+        height: 55vw;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.8;
+        animation: floatBlob2 30s ease-in-out infinite;
+      }
+
+      .bg-glow-blob-3 {
+        position: fixed;
+        top: 55%;
+        left: 35vw;
+        width: 35vw;
+        height: 35vw;
         border-radius: 50%;
         background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 70%);
         filter: blur(120px);
         pointer-events: none;
         z-index: -1;
-        opacity: 0.8;
+        opacity: 0.6;
+        animation: floatBlob3 20s ease-in-out infinite;
       }
 
       /* Global Readability Overrides */
@@ -976,6 +1118,18 @@
     </style>
   </head>
   <body>
+    <!-- Premium Cinematic Overlays -->
+    <div class="film-grain"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow-blob-1"></div>
+    <div class="bg-glow-blob-2"></div>
+    <div class="bg-glow-blob-3"></div>
+    
+    <div class="custom-cursor">
+      <div class="custom-cursor-dot" id="cursor-dot"></div>
+      <div class="custom-cursor-ring" id="cursor-ring"></div>
+    </div>
+
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
@@ -1035,8 +1189,6 @@
 
     <!-- Main Content Wrapper (with absolute elements inside) -->
     <main style="position: relative; background: var(--black);">
-      <div class="bg-glow-blob-1"></div>
-      <div class="bg-glow-blob-2"></div>
 
       <!-- Headline Section -->
       <section id="pricing-sheet" class="headline-section">
@@ -1389,6 +1541,16 @@
               trigger: '.pricing-grid',
               start: "top 88%",
               toggleActions: "play none none none"
+            },
+            onComplete: () => {
+              // Stagger list items inside each card smoothly
+              document.querySelectorAll('.price-card').forEach(card => {
+                const items = card.querySelectorAll('.feature-item');
+                gsap.fromTo(items,
+                  { opacity: 0, y: 15 },
+                  { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power2.out" }
+                );
+              });
             }
           }
         );
@@ -1512,6 +1674,34 @@
           });
         });
       });
+
+      // Custom Cursor Logic
+      const cursorDot = document.getElementById('cursor-dot');
+      const cursorRing = document.getElementById('cursor-ring');
+      const customCursor = document.querySelector('.custom-cursor');
+
+      if (window.matchMedia('(pointer: fine)').matches) {
+        gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
+        gsap.set(cursorRing, { xPercent: -50, yPercent: -50 });
+
+        window.addEventListener('mousemove', (e) => {
+          gsap.to(cursorDot, { x: e.clientX, y: e.clientY, duration: 0.05, ease: "power2.out" });
+          gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.25, ease: "power2.out" });
+        });
+
+        // Hover effect for all interactive elements
+        const hoverTargets = document.querySelectorAll('a, button, .price-card, .addon-card, input, select, textarea');
+        hoverTargets.forEach(target => {
+          target.addEventListener('mouseenter', () => {
+            customCursor.classList.add('custom-cursor-hover');
+          });
+          target.addEventListener('mouseleave', () => {
+            customCursor.classList.remove('custom-cursor-hover');
+          });
+        });
+      } else {
+        if (customCursor) customCursor.style.display = 'none';
+      }
     </script>
   </body>
 </html>
